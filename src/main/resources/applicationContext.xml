@@ -7,9 +7,6 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="testBean"
-          class="alishev.spring.demo.TestBean">
-        <constructor-arg value="Neil"/>
-    </bean>
+    <context:component-scan base-package="com.leverx.govoronok"/>
 
 </beans>
