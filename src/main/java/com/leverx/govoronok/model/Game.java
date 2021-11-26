@@ -8,16 +8,15 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
-@Component
 @Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Scope(value = "prototype")
+@Table(name = "Game")
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "genre", nullable = false)
     private GameGenre genre;
 }

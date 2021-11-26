@@ -4,34 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
-
-//@Configuration
-//@EnableWebMvc
-//@EnableAspectJAutoProxy
-//@ComponentScan(basePackages = "com.leverx.govoronok")
-//public class SpringConfig extends WebMvcConfigurerAdapter{
-//
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//       // super.addResourceHandlers(registry);
-//        registry.addResourceHandler("/resources/**")
-//                .addResourceLocations("/resources/");
-//    }
-//
-//    @Bean
-//    public InternalResourceViewResolver viewResolver() {
-//        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-//        viewResolver.setViewClass(JstlView.class);
-////        templateResolver.setPrefix("/WEB-INF/view/");
-////        templateResolver.setSuffix(".html");
-//        return viewResolver;
-//    }
-//}
 
 @Configuration
 @ComponentScan("com.leverx.govoronok")
@@ -49,8 +24,9 @@ public class SpringConfig implements WebMvcConfigurer {
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
-        templateResolver.setPrefix("/WEB-INF/views/");
+        templateResolver.setPrefix("/WEB-INF/view/");
         templateResolver.setSuffix(".html");
+        templateResolver.setSuffix(".jsp");
         return templateResolver;
     }
 
@@ -68,4 +44,6 @@ public class SpringConfig implements WebMvcConfigurer {
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
     }
+
+
 }
