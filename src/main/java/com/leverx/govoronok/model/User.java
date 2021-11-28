@@ -32,7 +32,7 @@ public class User {
     private Date createdAt;
 
     @Column(name = "approved", nullable = false)
-    private Boolean approved;
+    private Boolean approved = Boolean.FALSE;
 
     @Column(name = "role", nullable = false)
     private Role role;

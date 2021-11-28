@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/games")
@@ -47,19 +48,21 @@ public class GameController {
 
     @GetMapping("/{id}/edit")
     public String editGame(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("game", gameService.getGameById(id));
-        return "game/gameEdit";
+        Optional<Game> game = gameService.getGameById(id);
+        if (game.isPresent()) {
+            model.addAttribute("game", game.get());
+            List<GameGenre> gameGenreList = Arrays.asList(GameGenre.values());
+            model.addAttribute("gameGenres", gameGenreList);
+            return "game/gameEdit";
+        } else {
+            return "game/games";
+        }
     }
 
     @PutMapping("/{id}")
     public String updateGame(@ModelAttribute("game") Game game, @PathVariable("id") Long id) {
         gameService.updateGame(id, game);
-        return "game/games";
+        return "redirect:/games";
     }
 
-    @GetMapping("/say")
-    public String sayHello() {
-        gameService.test();
-        return "test";
-    }
 }
