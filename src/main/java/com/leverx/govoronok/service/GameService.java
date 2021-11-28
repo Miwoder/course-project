@@ -31,7 +31,7 @@ public class GameService {
         // Save a new customer
         Game newGame = new Game();
         newGame.setGenre(GameGenre.HORROR);
-        newGame.setName("Outlast");
+        newGame.setName("Outlast3");
 
         gameRepository.save(newGame);
 
@@ -40,7 +40,7 @@ public class GameService {
         result.ifPresent(System.out::println);
 
         // Find customers by last name
-        List<Game> games = gameRepository.findByName("Outlast");
+        List<Game> games = gameRepository.findByName("Outlast2");
         games.forEach(System.out::println);
 
         // List all customers

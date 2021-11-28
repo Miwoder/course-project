@@ -36,6 +36,7 @@ public class GameController {
 
     @GetMapping("/say")
     public String sayHello() {
+        gameService.test();
         return "test";
     }
 }
