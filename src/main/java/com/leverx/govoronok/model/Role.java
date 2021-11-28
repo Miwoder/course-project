@@ -4,4 +4,6 @@ public enum Role {
     ADMINISTRATOR,
     TRADER,
     ANONYMOUS
+
+
 }

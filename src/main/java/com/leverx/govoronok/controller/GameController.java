@@ -1,18 +1,22 @@
 package com.leverx.govoronok.controller;
 
 import com.leverx.govoronok.model.Game;
+import com.leverx.govoronok.model.GameGenre;
 import com.leverx.govoronok.service.GameService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
+@RequestMapping("/games")
 public class GameController {
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(GameController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
 
     private GameService gameService;
 
@@ -21,17 +25,36 @@ public class GameController {
         this.gameService = gameService;
     }
 
-//    @Autowired(required = true)
-//    public void setGameService(GameService gameService){
-//        this.gameService = gameService;
-//    }
+    @GetMapping()
+    public String getAllGames(Model model) {
+        model.addAttribute("games", gameService.getAllGames());
+        return "game/games";
+    }
 
-    @GetMapping(value = "gameShow")
-    public String listGames(Model model){
-        gameService.getGame();
+    @GetMapping("/new")
+    public String createNewGame(Model model) {
+        List<GameGenre> gameGenreList = Arrays.asList(GameGenre.values());
+        model.addAttribute("gameGenres", gameGenreList);
         model.addAttribute("game", new Game());
-        model.addAttribute("listGames", this.gameService.getGame());
-        return "gameShow";
+        return "game/newGame";
+    }
+
+    @PostMapping()
+    public String addNewGame(@ModelAttribute("game") Game game) {
+        gameService.addNewGame(game);
+        return "redirect:/games";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editGame(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("game", gameService.getGameById(id));
+        return "game/gameEdit";
+    }
+
+    @PutMapping("/{id}")
+    public String updateGame(@ModelAttribute("game") Game game, @PathVariable("id") Long id) {
+        gameService.updateGame(id, game);
+        return "game/games";
     }
 
     @GetMapping("/say")

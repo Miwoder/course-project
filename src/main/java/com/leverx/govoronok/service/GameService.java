@@ -21,10 +21,23 @@ public class GameService {
     }
 
 
-    public List<Game> getGame(){
-        List<Game> games = gameRepository.findByName("Outlast");
-        games.forEach(System.out::println);
+    public List<Game> getAllGames(){
+        List<Game> games = gameRepository.findAll();
         return games;
+    }
+
+    public Optional<Game> getGameById(Long id){
+        return gameRepository.findById(id);
+    }
+
+    public void updateGame(Long id, Game updatedGame){
+        Optional<Game> gameToBeUpdated = getGameById(id);
+        gameToBeUpdated.ifPresent(game -> game.setName(updatedGame.getName()));
+        gameToBeUpdated.ifPresent(game -> game.setGenre(updatedGame.getGenre()));
+    }
+
+    public void addNewGame(Game game){
+        gameRepository.save(game);
     }
 
     public void test() {

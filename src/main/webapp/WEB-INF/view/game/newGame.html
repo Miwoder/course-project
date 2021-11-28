@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New game</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/games}" th:object="${game}">
+    <label for="name">Enter name: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <br/>
+    <label for="gameGenre">Select game genre: </label>
+    <select class="form-control" th:field="*{genre}"  id="gameGenre" >
+        <option th:each="gameGenre : ${gameGenres}"
+                th:value="${gameGenre.gameGenre}"
+                th:text="${gameGenre.gameGenre}" />
+    </select>
+    <br/>
+    <input type="submit" value="Create new game"/>
+</form>
+
+</body>
+</html>

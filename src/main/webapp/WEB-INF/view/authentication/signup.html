@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New user</title>
+</head>
+<body>
+
+<form th:method="POST" th:object="${user}">
+    <label for="firstName">Enter first name: </label>
+    <input type="text" th:field="*{firstName}" id="firstName"/>
+    <br/>
+    <label for="lastName">Enter last name: </label>
+    <input type="text" th:field="*{lastname}" id="lastName"/>
+    <br/>
+    <label for="email">Enter email: </label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <br/>
+    <label for="password">Enter password: </label>
+    <input type="text" th:field="*{password}" id="password"/>
+    <br/>
+    <label for="role">Select game genre: </label>
+    <select class="form-control" th:field="*{role}"  id="role" >
+        <option th:each="role : ${userRoles}"
+                th:value="${role.role}"
+                th:text="${role.role}" />
+    </select>
+    <br/>
+    <input type="submit" value="Create new game"/>
+</form>
+
+</body>
+</html>
