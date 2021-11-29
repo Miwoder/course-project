@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="POST" th:object="${user}">
+<form method="POST" th:object="${user}" th:action="@{/signup}">
     <label for="firstName">First name: </label>
     <input type="text" th:field="*{firstName}" id="firstName"/>
     <br/>
@@ -17,13 +17,15 @@
     <input type="text" th:field="*{email}" id="email"/>
     <br/>
     <label for="password">Password: </label>
-    <input type="text" th:field="*{password}" id="password"/>
+    <input type='password' th:field="*{password}" id="password"/>
     <br/>
     <label for="role">Role: </label>
-    <select class="form-control" th:field="*{role}"  id="role" >
-        <option th:each="role : ${roleList}"
-                th:value="${role.role}"
-                th:text="${role.role}" />
+    <select id="role" required th:field="*{role}">
+        <option th:each="role : ${T(com.leverx.govoronok.model.Role).values()}"
+                th:if = "${role ne T(com.leverx.govoronok.model.Role).ADMINISTRATOR}"
+                th:value="${role}"
+                th:text="${role}">
+        </option>
     </select>
     <br/>
     <input type="submit" value="Sing up"/>

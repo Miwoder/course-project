@@ -6,12 +6,12 @@
 </head>
 <body>
 
-<form th:method="POST" th:object="${user}">
+<form th:method="POST" th:object="${user}" th:action="@{/games}">
     <label for="email">Email: </label>
     <input type="text" th:field="*{email}" id="email"/>
     <br/>
     <label for="password">Password: </label>
-    <input type="text" th:field="*{password}" id="password"/>
+    <input type='password' th:field="*{password}" id="password"/>
     <br/>
     <input type="submit" value="Sing in"/>
 </form>

@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Component
 @Data
@@ -29,11 +29,12 @@ public class User {
     private String email;
 
     @Column(name = "createdAt", nullable = false)
-    private Date createdAt;
+    private LocalDate createdAt = LocalDate.now();
 
     @Column(name = "approved", nullable = false)
     private Boolean approved = Boolean.FALSE;
 
     @Column(name = "role", nullable = false)
     private Role role;
+
 }

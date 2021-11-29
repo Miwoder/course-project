@@ -36,17 +36,26 @@ public class UserController {
 
     @GetMapping("/signup")
     public String createNewUser(Model model) {
-        List<Role> roleList = Arrays.asList(Role.values());
-        roleList.remove(0);
-        model.addAttribute("roleList", roleList);
         model.addAttribute("user", new User());
-        return "authentication/signup";
+        return "/authentication/signup";
     }
 
-    @PostMapping()
-    public String addNewGame(@ModelAttribute("user") User user) {
+    @PostMapping("/signup")
+    public String addNewUser(@ModelAttribute("user") User user) {
         userService.addNewUser(user);
-        return "redirect:authentication/confirmAlert";
+        return "redirect:/authentication/confirmAlert";
     }
+
+    @GetMapping("/authentication/confirmAlert")
+    public String getConfirmAlert() {
+        return "/authentication/confirmAlert";
+    }
+
+    @GetMapping("/signin")
+    public String login(Model model) {
+        //model.addAttribute("user", new User());
+        return "/authentication/signin";
+    }
+
 
 }
