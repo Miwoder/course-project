@@ -34,6 +34,9 @@ public class User {
     @Column(name = "approved", nullable = false)
     private Boolean approved = Boolean.FALSE;
 
+    @Column(name = "confirmedByAdmin", nullable = false)
+    private Boolean confirmedByAdmin = Boolean.FALSE;
+
     @Column(name = "role", nullable = false)
     private Role role;
 

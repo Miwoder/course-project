@@ -20,7 +20,7 @@ import java.util.List;
 
 @Controller
 public class UserController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     private UserService userService;
 

@@ -2,6 +2,7 @@ package com.leverx.govoronok.model;
 
 
 import lombok.Data;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class GameObject {
     private Date createdAt;
 
     @Column(name = "updatedAt", nullable = false)
+    @LastModifiedDate
     private Date updatedAt;
 
     @Column(name = "gameID", nullable = false)

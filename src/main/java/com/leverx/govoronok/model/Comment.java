@@ -33,4 +33,5 @@ public class Comment {
 
     @Column(name = "rating", nullable = false)
     private Integer rating;
+
 }
