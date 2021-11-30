@@ -77,7 +77,7 @@ public class CommentController {
     @DeleteMapping("/users/{traderId}/comments/{commentId}")
     public String deleteCommentForTraderByAuthor(Model model, @PathVariable("traderId") Long traderId,
                                                  @PathVariable("commentId") Long commentId){
-        commentService.deleteComment(commentId);
+        commentService.deleteCommentById(commentId);
         return null;
     }
 

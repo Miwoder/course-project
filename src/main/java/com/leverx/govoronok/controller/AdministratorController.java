@@ -1,7 +1,6 @@
 package com.leverx.govoronok.controller;
 
 import com.leverx.govoronok.model.Role;
-import com.leverx.govoronok.model.User;
 import com.leverx.govoronok.service.CommentService;
 import com.leverx.govoronok.service.UserService;
 import org.slf4j.Logger;
@@ -10,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/administration")
@@ -43,12 +40,24 @@ public class AdministratorController {
     @DeleteMapping("/user/{id}")
     public String deleteUser(@PathVariable("id") Long userId) {
         userService.deleteUserById(userId);
-        return "redirect:/authentication/unconfirmedUsers";
+        return "redirect:/administration/users";
     }
 
     @PatchMapping("/user/{id}")
     public String approveUser(@PathVariable("id") Long userId) {
         userService.setApprovedStatusToUserById(userId);
-        return "redirect:/authentication/unconfirmedUsers";
+        return "redirect:/administration/users";
+    }
+
+    @DeleteMapping("/comment/{id}")
+    public String deleteComment(@PathVariable("id") Long commentId) {
+        commentService.deleteCommentById(commentId);
+            return "redirect:/administration/comments";
+    }
+
+    @PatchMapping("/comment/{id}")
+    public String approveComment(@PathVariable("id") Long commentId) {
+        commentService.setApprovedStatusToCommentById(commentId);
+        return "redirect:/administration/comments";
     }
 }

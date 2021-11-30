@@ -36,7 +36,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    public void deleteComment(Long id){
+    public void deleteCommentById(Long id){
         commentRepository.deleteById(id);
     }
 
@@ -49,6 +49,16 @@ public class CommentService {
             commentRepository.save(commentToBeUpdated.get());
         } else {
             System.out.println("ERROR UPD");
+        }
+    }
+
+    public void setApprovedStatusToCommentById(Long id){
+        Optional<Comment> comment = commentRepository.findById(id);
+        if (comment.isPresent()) {
+            comment.get().setApproved(Boolean.TRUE);
+            commentRepository.save(comment.get());
+        } else {
+            System.out.println("ERROR WITH APPR");
         }
 
     }

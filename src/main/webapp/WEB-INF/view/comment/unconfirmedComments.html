@@ -26,8 +26,11 @@
         <td th:text="${comment.getCreatedAt()}"/>
         <td th:text="${comment.getRating()}"/>
         <td>
-            <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
+            <form th:method="DELETE" th:action="@{/administration/comment/{id}(id=${comment.getId()})}">
                 <input type="submit" value="Delete"/>
+            </form>
+            <form th:method="PATCH" th:action="@{/administration/comment/{id}(id=${comment.getId()})}">
+                <input type="submit" value="Approve"/>
             </form>
         </td>
     </tr>

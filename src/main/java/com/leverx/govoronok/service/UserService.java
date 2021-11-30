@@ -42,6 +42,5 @@ public class UserService {
         } else {
             System.out.println("ERROR WITH APPR");
         }
-
     }
 }
