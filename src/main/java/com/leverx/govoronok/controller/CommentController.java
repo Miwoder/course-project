@@ -1,8 +1,8 @@
 package com.leverx.govoronok.controller;
 
 import com.leverx.govoronok.model.Comment;
-import com.leverx.govoronok.model.User;
 import com.leverx.govoronok.service.CommentService;
+import com.leverx.govoronok.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -19,10 +18,12 @@ public class CommentController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
 
     private CommentService commentService;
+    private UserService userService;
 
     @Autowired
-    public CommentController(CommentService commentService){
+    public CommentController(CommentService commentService,  UserService userService){
         this.commentService = commentService;
+        this.userService = userService;
     }
 
     @GetMapping("/users/{id}/comments/{commentId}")
@@ -42,9 +43,11 @@ public class CommentController {
         return "comment/allComments";
     }
 
-    //TODO: ADD AUTHOR AND TRADER
+    //TODO: ADD AUTHOR
     @PostMapping("/users/{id}/comments")
     public String addNewComment(Model model, @PathVariable("id") Long traderId, @ModelAttribute("newComment") Comment newComment) {
+        newComment.setTrader(userService.getUserById(traderId).get());
+        newComment.setAuthor(userService.getUserById((long) 27).get());
         commentService.addNewComment(newComment);
         return "redirect:/comment/confirmComment";
     }
@@ -78,9 +81,4 @@ public class CommentController {
         return null;
     }
 
-    @GetMapping("administration/comments")
-    public String getAllUnconfirmedComments(Model model) {
-        model.addAttribute("comments", commentService.getAllUnconfirmedComments());
-        return "comment/unconfirmedComments";
-    }
 }
