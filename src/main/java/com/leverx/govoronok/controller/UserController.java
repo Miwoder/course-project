@@ -57,5 +57,11 @@ public class UserController {
         return "/authentication/signin";
     }
 
+    @GetMapping("administration/users")
+    public String getAllUnconfirmedUsers(Model model) {
+        model.addAttribute("users", userService.getAllUnconfirmedUsers(Role.TRADER));
+        return "authentication/unconfirmedUsers";
+    }
+
 
 }

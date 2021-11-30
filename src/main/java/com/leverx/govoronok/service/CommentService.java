@@ -28,8 +28,8 @@ public class CommentService {
         return commentRepository.getCommentByIdAndTrader_Id(commentId, traderId);
     }
 
-    public List<Comment> getAllComments(){
-        return commentRepository.findAll();
+    public List<Comment> getAllUnconfirmedComments(){
+        return commentRepository.getCommentsByApprovedIsFalse();
     }
 
     public void addNewComment(Comment comment){

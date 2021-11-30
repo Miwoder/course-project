@@ -1,9 +1,13 @@
 package com.leverx.govoronok.service;
 
+import com.leverx.govoronok.model.Comment;
+import com.leverx.govoronok.model.Role;
 import com.leverx.govoronok.model.User;
 import com.leverx.govoronok.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service("userService")
 public class UserService {
@@ -16,5 +20,9 @@ public class UserService {
 
     public void addNewUser(User user){
         userRepository.save(user);
+    }
+
+    public List<User> getAllUnconfirmedUsers(Role traderRole){
+        return userRepository.getUsersByApprovedIsTrueAndConfirmedByAdminFalseAndRoleIs(traderRole);
     }
 }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Unconfirmed users</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th>User ID</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Email</th>
+        <th>CreatedAt</th>
+        <th>Role</th>
+        <th>Delete / approve</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.getId()}"/>
+        <td th:text="${user.getFirstName()}"/>
+        <td th:text="${user.getLastName()}"/>
+        <td th:text="${user.getEmail()}"/>
+        <td th:text="${user.getCreatedAt()}"/>
+        <td th:text="${user.getRole()}"/>
+        <td>Delete / approve </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -78,9 +78,9 @@ public class CommentController {
         return null;
     }
 
-    @GetMapping("/comments")
-    public String getAllComments(Model model) {
-        model.addAttribute("comments", commentService.getAllComments());
-        return "comment/allComments";
+    @GetMapping("administration/comments")
+    public String getAllUnconfirmedComments(Model model) {
+        model.addAttribute("comments", commentService.getAllUnconfirmedComments());
+        return "comment/unconfirmedComments";
     }
 }

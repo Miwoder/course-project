@@ -42,6 +42,7 @@ public class User {
     @Column(name = "confirmedByAdmin", nullable = false)
     private Boolean confirmedByAdmin = Boolean.FALSE;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
 

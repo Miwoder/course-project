@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Unconfirmed comments</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th>Comment ID</th>
+        <th>Trader ID</th>
+        <th>Is trader approved</th>
+        <th>Message</th>
+        <th>Author ID</th>
+        <th>CreatedAt</th>
+        <th>Rating</th>
+        <th>Delete / approve</th>
+    </tr>
+    <tr th:each="comment : ${comments}">
+        <td th:text="${comment.getId()}"/>
+        <td th:text="${comment.getTrader().getId()}"/>
+        <td th:text="${comment.getTrader().getApproved()}"/>
+        <td th:text="${comment.getMessage()}"/>
+        <td th:text="${comment.getAuthor().getId()}"/>
+        <td th:text="${comment.getCreatedAt()}"/>
+        <td th:text="${comment.getRating()}"/>
+        <td>Delete / approve </td>
+    </tr>
+</table>
+</body>
+</html>
