@@ -29,4 +29,19 @@ public class UserService {
     public Optional<User> getUserById(Long id){
         return userRepository.findById(id);
     }
+
+    public void deleteUserById(Long id){
+        userRepository.deleteById(id);
+    }
+
+    public void setApprovedStatusToUserById(Long id){
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            user.get().setConfirmedByAdmin(Boolean.TRUE);
+            userRepository.save(user.get());
+        } else {
+            System.out.println("ERROR WITH APPR");
+        }
+
+    }
 }

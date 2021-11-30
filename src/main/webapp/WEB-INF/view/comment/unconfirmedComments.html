@@ -25,7 +25,11 @@
         <td th:text="${comment.getAuthor().getId()}"/>
         <td th:text="${comment.getCreatedAt()}"/>
         <td th:text="${comment.getRating()}"/>
-        <td>Delete / approve </td>
+        <td>
+            <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
+                <input type="submit" value="Delete"/>
+            </form>
+        </td>
     </tr>
 </table>
 </body>

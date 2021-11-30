@@ -1,6 +1,7 @@
 package com.leverx.govoronok.controller;
 
 import com.leverx.govoronok.model.Role;
+import com.leverx.govoronok.model.User;
 import com.leverx.govoronok.service.CommentService;
 import com.leverx.govoronok.service.UserService;
 import org.slf4j.Logger;
@@ -8,8 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/administration")
@@ -36,5 +38,17 @@ public class AdministratorController {
     public String getAllUnconfirmedUsers(Model model) {
         model.addAttribute("users", userService.getAllUnconfirmedUsers(Role.TRADER));
         return "authentication/unconfirmedUsers";
+    }
+
+    @DeleteMapping("/user/{id}")
+    public String deleteUser(@PathVariable("id") Long userId) {
+        userService.deleteUserById(userId);
+        return "redirect:/authentication/unconfirmedUsers";
+    }
+
+    @PatchMapping("/user/{id}")
+    public String approveUser(@PathVariable("id") Long userId) {
+        userService.setApprovedStatusToUserById(userId);
+        return "redirect:/authentication/unconfirmedUsers";
     }
 }
