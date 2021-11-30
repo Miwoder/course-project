@@ -1,6 +1,8 @@
 package com.leverx.govoronok.service;
 
 import com.leverx.govoronok.model.Comment;
+import com.leverx.govoronok.model.Game;
+import com.leverx.govoronok.model.User;
 import com.leverx.govoronok.repository.CommentRepository;
 import com.leverx.govoronok.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ public class CommentService {
     }
 
     public List<Comment> getCommentsForUserById(Long id){
-        return commentRepository.getCommentsByTrader_Id(id);
+        return commentRepository.getCommentsByTrader_IdAndApprovedIsTrue(id);
     }
 
     public Comment getCommentForUserByCommentId(Long commentId, Long traderId){
@@ -28,6 +30,27 @@ public class CommentService {
 
     public List<Comment> getAllComments(){
         return commentRepository.findAll();
+    }
+
+    public void addNewComment(Comment comment){
+        commentRepository.save(comment);
+    }
+
+    public void deleteComment(Long id){
+        commentRepository.deleteById(id);
+    }
+
+    public void updateComment(Long id, Comment updatedComment){
+        Optional<Comment> commentToBeUpdated = commentRepository.findById(id);
+        if (commentToBeUpdated.isPresent()) {
+            commentToBeUpdated.get().setMessage(updatedComment.getMessage());
+            commentToBeUpdated.get().setRating(updatedComment.getRating());
+            commentToBeUpdated.get().setApproved(Boolean.FALSE);
+            commentRepository.save(commentToBeUpdated.get());
+        } else {
+            System.out.println("ERROR UPD");
+        }
+
     }
 
 }

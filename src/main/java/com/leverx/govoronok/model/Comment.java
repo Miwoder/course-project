@@ -1,13 +1,17 @@
 package com.leverx.govoronok.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Comment")
 public class Comment {
     @Id
@@ -19,10 +23,10 @@ public class Comment {
     private String message;
 
     @Column(name = "approved", nullable = false)
-    private Boolean approved;
+    private Boolean approved = Boolean.FALSE;
 
     @Column(name = "createdAt", nullable = false)
-    private Date createdAt;
+    private LocalDate createdAt = LocalDate.now();
 
     @Column(name = "rating", nullable = false)
     private Integer rating;

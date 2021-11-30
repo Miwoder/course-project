@@ -21,5 +21,17 @@
     </tr>
 </table>
 
+<h3>Add new comment:</h3>
+
+<form method="POST" th:object="${newComment}" th:action="@{/users/{id}/comments(id=${traderId})}">
+    <label for="message">Message: </label>
+    <input type="text" th:field="*{message}" id="message"/>
+    <br/>
+    <label for="rating">Rating: </label>
+    <input type="text" th:field="*{rating}" id="rating"/>
+    <br/>
+    <input type="submit" value="Add comment"/>
+</form>
+
 </body>
 </html>

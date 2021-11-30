@@ -14,5 +14,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     Comment getCommentByIdAndTrader_Id(Long commentId, Long traderId);
 
-    List<Comment> getCommentsByTrader_Id(Long id);
+    List<Comment> getCommentsByTrader_IdAndApprovedIsTrue(Long trader_id);
+
+    void deleteCommentByIdAndTrader_IdAndAuthor_Id(Long commentId, Long traderId, Long AuthorId);
+
 }

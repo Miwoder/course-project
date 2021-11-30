@@ -1,6 +1,6 @@
 package com.leverx.govoronok.model;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -8,7 +8,11 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Component
-@Data
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "User")
 public class User {

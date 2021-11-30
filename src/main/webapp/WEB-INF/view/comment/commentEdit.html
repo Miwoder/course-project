@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit comment</title>
+</head>
+<body>
+
+<form th:method="PUT" th:action="@{/users/{id}/comments/{commentId}(id=${comment.getTrader().getId()} , commentId=${comment.getId()})}" th:object="${comment}">
+    <label for="message">Message: </label>
+    <input type="text" th:field="*{message}" id="message"/>
+    <br/>
+    <label for="rating">Rating: </label>
+    <input type="text" th:field="*{rating}" id="rating"/>
+    <br/>
+    <input type="submit" value="Update comment"/>
+</form>
+
+</body>
+</html>

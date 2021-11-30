@@ -32,7 +32,7 @@ public class GameService {
     }
 
     public void updateGame(Long id, Game updatedGame){
-        Optional<Game> gameToBeUpdated = getGameById(id);
+        Optional<Game> gameToBeUpdated = gameRepository.findById(id);
         if (gameToBeUpdated.isPresent()) {
             gameToBeUpdated.get().setName(updatedGame.getName());
             gameToBeUpdated.get().setGenre(updatedGame.getGenre());
