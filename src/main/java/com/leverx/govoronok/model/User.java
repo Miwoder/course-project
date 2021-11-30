@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Component
 @Data
@@ -40,4 +41,11 @@ public class User {
     @Column(name = "role", nullable = false)
     private Role role;
 
+    @OneToMany(mappedBy = "trader", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<Comment> commentsForThisUser;
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<Comment> commentsByThisUser;
 }

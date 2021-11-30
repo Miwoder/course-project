@@ -1,7 +1,6 @@
 package com.leverx.govoronok.model;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.persistence.Table;
@@ -19,12 +18,6 @@ public class Comment {
     @Column(name = "message", nullable = false)
     private String message;
 
-    @Column(name = "traderID", nullable = false)
-    private Long traderId;
-
-    @Column(name = "authorID", nullable = false)
-    private Long authorId;
-
     @Column(name = "approved", nullable = false)
     private Boolean approved;
 
@@ -34,4 +27,11 @@ public class Comment {
     @Column(name = "rating", nullable = false)
     private Integer rating;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "traderId", nullable = false)
+    private User trader;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "authorId", nullable = false)
+    private User author;
 }

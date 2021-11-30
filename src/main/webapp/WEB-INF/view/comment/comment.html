@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Comment</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th>message</th>
+        <th>author</th>
+        <th>createdAt</th>
+        <th>rating</th>
+    </tr>
+    <tr th:object="${comment}">
+        <td th:text="${comment.getMessage()}"/>
+        <td th:text="${comment.getAuthor().getFirstName()}"/>
+        <td th:text="${comment.getCreatedAt()}"/>
+        <td th:text="${comment.getRating()}"/>
+    </tr>
+</table>
+
+</body>
+</html>

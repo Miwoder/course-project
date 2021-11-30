@@ -1,9 +1,8 @@
 package com.leverx.govoronok.service;
 
 import com.leverx.govoronok.model.Comment;
-import com.leverx.govoronok.model.Game;
 import com.leverx.govoronok.repository.CommentRepository;
-import com.leverx.govoronok.repository.GameRepository;
+import com.leverx.govoronok.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +18,17 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-//    public Optional<List<Comment>> getCommentsByUsersId(Long id){
-//        return ;
-//    }
+    public List<Comment> getCommentsForUserById(Long id){
+        return commentRepository.getCommentsByTrader_Id(id);
+    }
+
+    public Comment getCommentForUserByCommentId(Long commentId, Long traderId){
+        return commentRepository.getCommentByIdAndTrader_Id(commentId, traderId);
+    }
+
+    public List<Comment> getAllComments(){
+        return commentRepository.findAll();
+    }
 
 }
 

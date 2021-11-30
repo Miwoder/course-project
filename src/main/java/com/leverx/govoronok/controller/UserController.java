@@ -31,7 +31,7 @@ public class UserController {
 
     @GetMapping("/")
     public String redirectToSingIn(){
-        return "authentication/signin";
+        return "redirect:/signup";
     }
 
     @GetMapping("/signup")
