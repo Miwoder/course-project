@@ -1,5 +1,6 @@
 package com.leverx.govoronok.controller;
 
+import com.leverx.govoronok.model.Comment;
 import com.leverx.govoronok.model.Game;
 import com.leverx.govoronok.model.Role;
 import com.leverx.govoronok.model.User;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -42,6 +44,9 @@ public class UserController {
 
     @PostMapping("/signup")
     public String addNewUser(@ModelAttribute("user") User user) {
+        if(user.getRole()==Role.USER){
+            user.setConfirmedByAdmin(Boolean.TRUE);
+        }
         userService.addNewUser(user);
         return "redirect:/authentication/confirmAlert";
     }
@@ -55,6 +60,23 @@ public class UserController {
     public String login(Model model) {
         //model.addAttribute("user", new User());
         return "/authentication/signin";
+    }
+
+    @GetMapping("/traders")
+    public String getAllTraders(Model model) {
+        model.addAttribute("newUser", new User());
+        model.addAttribute("traders", userService.getAllTraders(Role.TRADER));
+        //model.addAttribute("rating", userService.getUserRatingByAllCommentsById(29L));
+        return "user/traders";
+    }
+
+    @PostMapping("/traders")
+    public String addNewTraderByUser(Model model, @ModelAttribute("newUser") User newUser) {
+        newUser.setRole(Role.TRADER);
+        newUser.setEmail("adminmail@mail.com");
+        newUser.setPassword("jayehfub");
+        userService.addNewUser(newUser);
+        return "redirect:/traders";
     }
 
 }

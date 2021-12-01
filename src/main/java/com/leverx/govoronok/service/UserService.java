@@ -43,4 +43,12 @@ public class UserService {
             System.out.println("ERROR WITH APPR");
         }
     }
+
+    public List<User> getAllTraders(Role traderRole){
+        return userRepository.getUsersByApprovedIsTrueAndConfirmedByAdminTrueAndRoleIs(traderRole);
+    }
+
+//    public Integer getUserRatingByAllCommentsById(Long id){
+//        return userRepository.getAverageRatingForUserById(id);
+//    }
 }

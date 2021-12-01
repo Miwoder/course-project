@@ -8,18 +8,36 @@
 
 <table>
     <tr>
-        <th>message</th>
-        <th>authorId</th>
-        <th>createdAt</th>
+        <th>ID</th>
+        <th>First name</th>
+        <th>Last name</th>
         <th>rating</th>
+        <th></th>
     </tr>
-    <tr th:each="comment : ${comments}">
-        <td th:text="${comment.getMessage()}"/>
-        <td th:text="${comment.getAuthorId()}"/>
-        <td th:text="${comment.getCreatedAt()}"/>
-        <td th:text="${comment.getRating()}"/>
+    <tr th:each="trader : ${traders}">
+        <td th:text="${trader.getId()}"/>
+        <td th:text="${trader.getFirstName()}"/>
+        <td th:text="${trader.getLastName()}"/>
+        <td th:text="${rating}"/>
+        <td>
+            <form th:method="GET" th:action="@{/users/{id}/comments(id=${trader.getId()})}">
+                <input type="submit" value="Go to trader page"/>
+            </form>
+        </td>
     </tr>
 </table>
+
+<h4>Didn't find trader? Try to add him and we will check</h4>
+<form method="POST" th:object="${newUser}" th:action="@{/traders}">
+    <label for="firstName">First name: </label>
+    <input type="text" th:field="*{firstName}" id="firstName"/>
+    <br/>
+    <label for="lastName">Last name: </label>
+    <input type="text" th:field="*{lastName}" id="lastName"/>
+    <br/>
+    <br/>
+    <input type="submit" value="Add trader"/>
+</form>
 
 </body>
 </html>
