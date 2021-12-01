@@ -1,15 +1,17 @@
 package com.leverx.govoronok.model;
 
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
-@Component
-@Data
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "GameObject")
 public class GameObject {
@@ -20,16 +22,18 @@ public class GameObject {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "authorID", nullable = false)
-    private Long authorId;
-
     @Column(name = "createdAt", nullable = false)
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "updatedAt", nullable = false)
     @LastModifiedDate
-    private Date updatedAt;
+    private LocalDate updatedAt;
 
-    @Column(name = "gameID", nullable = false)
-    private Long gameId;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "authorId", nullable = false)
+    private User author;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "gameId", nullable = false)
+    private Game game;
 }

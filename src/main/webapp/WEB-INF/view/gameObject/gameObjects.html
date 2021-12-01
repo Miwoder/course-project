@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Game objects</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Game name</th>
+        <th>Game genre</th>
+        <th>Created</th>
+        <th>Updated</th>
+    </tr>
+    <tr th:each="gameObject : ${gameObjects}">
+        <td th:text="${gameObject.getTitle()}"/>
+        <td th:text="${gameObject.getGame().getName()}"/>
+        <td th:text="${gameObject.getGame().getGenre()}"/>
+        <td th:text="${gameObject.getCreatedAt()}"/>
+        <td th:text="${gameObject.getUpdatedAt()}"/>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
-@Component
 @Getter
 @Setter
 @ToString
@@ -53,4 +52,8 @@ public class User {
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<Comment> commentsByThisUser;
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<GameObject> gameObjects;
 }
