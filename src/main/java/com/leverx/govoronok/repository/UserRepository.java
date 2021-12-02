@@ -16,6 +16,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> getUsersByApprovedIsTrueAndConfirmedByAdminTrueAndRoleIs(Role role);
 
+    User getUserByEmail(String email);
+
 //    @Query(value = "SELECT avg(Comment.rating) FROM Comment WHERE Comment.trader.id=?1")
 //    Integer getAverageRatingForUserById(Long id);
 }

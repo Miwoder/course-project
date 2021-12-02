@@ -1,6 +1,7 @@
 package com.leverx.govoronok.controller;
 
 import com.leverx.govoronok.model.Comment;
+import com.leverx.govoronok.model.User;
 import com.leverx.govoronok.service.CommentService;
 import com.leverx.govoronok.service.UserService;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -38,17 +40,17 @@ public class CommentController {
     @GetMapping("/{id}/comments")
     public String getAllUserComments(Model model, @PathVariable("id") Long id) {
         List<Comment> comments = commentService.getCommentsForUserById(id);
-        //model.addAttribute("traderId", id);
         model.addAttribute("comments", comments);
         model.addAttribute("newComment", new Comment());
         return "comment/allComments";
     }
 
-    //TODO: ADD AUTHOR
+    //TODO: correct mapping
     @PostMapping("/{id}/comments")
-    public String addNewComment(Model model, @PathVariable("id") Long traderId, @ModelAttribute("newComment") Comment newComment) {
+    public String addNewComment(Principal principal, Model model, @PathVariable("id") Long traderId, @ModelAttribute("newComment") Comment newComment) {
         newComment.setTrader(userService.getUserById(traderId).get());
-        newComment.setAuthor(userService.getUserById((long) 27).get());
+        User user = userService.findByUsername(principal.getName());
+        newComment.setAuthor(user);
         commentService.addNewComment(newComment);
         return "redirect:/comment/confirmComment";
     }
