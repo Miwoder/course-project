@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Comments</title>
@@ -23,7 +23,7 @@
 
 <h3>Add new comment:</h3>
 
-<form method="POST" th:object="${newComment}" th:action="@{/users/{id}/comments(id=${traderId})}">
+<form method="POST" th:object="${newComment}" th:action="@{/users/{id}/comments(id=${id})}">
     <label for="message">Message: </label>
     <input type="text" th:field="*{message}" id="message"/>
     <br/>

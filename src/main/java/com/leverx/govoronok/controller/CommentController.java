@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/users")
 public class CommentController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
@@ -26,7 +27,7 @@ public class CommentController {
         this.userService = userService;
     }
 
-    @GetMapping("/users/{id}/comments/{commentId}")
+    @GetMapping("/{id}/comments/{commentId}")
     public String getCommentForUser(Model model, @PathVariable("id") Long traderId,
                                     @PathVariable("commentId") Long commentId) {
         Comment comment = commentService.getCommentForUserByCommentId(commentId, traderId);
@@ -34,17 +35,17 @@ public class CommentController {
         return "comment/comment";
     }
 
-    @GetMapping("/users/{id}/comments")
+    @GetMapping("/{id}/comments")
     public String getAllUserComments(Model model, @PathVariable("id") Long id) {
         List<Comment> comments = commentService.getCommentsForUserById(id);
-        model.addAttribute("traderId", id);
+        //model.addAttribute("traderId", id);
         model.addAttribute("comments", comments);
         model.addAttribute("newComment", new Comment());
         return "comment/allComments";
     }
 
     //TODO: ADD AUTHOR
-    @PostMapping("/users/{id}/comments")
+    @PostMapping("/{id}/comments")
     public String addNewComment(Model model, @PathVariable("id") Long traderId, @ModelAttribute("newComment") Comment newComment) {
         newComment.setTrader(userService.getUserById(traderId).get());
         newComment.setAuthor(userService.getUserById((long) 27).get());
@@ -52,7 +53,7 @@ public class CommentController {
         return "redirect:/comment/confirmComment";
     }
 
-    @GetMapping("/users/{id}/comments/{commentId}/edit")
+    @GetMapping("/{id}/comments/{commentId}/edit")
     public String editCommentForUser(Model model, @PathVariable("id") Long traderId,
                                     @PathVariable("commentId") Long commentId) {
         Comment comment = commentService.getCommentForUserByCommentId(commentId, traderId);
@@ -61,7 +62,7 @@ public class CommentController {
     }
 
     //TODO: Add author
-    @PutMapping("/users/{id}/comments/{commentId}")
+    @PutMapping("/{id}/comments/{commentId}")
     public String updateComment(Model model, @PathVariable("id") Long traderId, @ModelAttribute("newComment") Comment updatedComment,
                                 @PathVariable("commentId") Long commentId) {
         commentService.updateComment(commentId, updatedComment);
@@ -74,7 +75,7 @@ public class CommentController {
     }
 
     //TODO:delete by author
-    @DeleteMapping("/users/{traderId}/comments/{commentId}")
+    @DeleteMapping("/{traderId}/comments/{commentId}")
     public String deleteCommentForTraderByAuthor(Model model, @PathVariable("traderId") Long traderId,
                                                  @PathVariable("commentId") Long commentId){
         commentService.deleteCommentById(commentId);
