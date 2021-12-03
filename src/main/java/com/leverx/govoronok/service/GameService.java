@@ -5,8 +5,11 @@ import com.leverx.govoronok.model.Game;
 import com.leverx.govoronok.model.GameGenre;
 import com.leverx.govoronok.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +34,7 @@ public class GameService {
         return gameRepository.findById(id);
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     public void updateGame(Long id, Game updatedGame){
         Optional<Game> gameToBeUpdated = gameRepository.findById(id);
         if (gameToBeUpdated.isPresent()) {

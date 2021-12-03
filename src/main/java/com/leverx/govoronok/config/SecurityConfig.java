@@ -1,15 +1,12 @@
 package com.leverx.govoronok.config;
 
-import com.leverx.govoronok.model.User;
 import com.leverx.govoronok.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
@@ -28,18 +25,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/games/**","/traders/**","/my/**","/users/**").authenticated()
-                .antMatchers("/administration/**").hasRole("ADMINISTRATOR")
+                .antMatchers("/games/**","/traders/**","/users/**").authenticated()
+                .antMatchers("/administration/**").hasAuthority("ADMINISTRATOR")
+                //.anyRequest().authenticated()
                 .and()
-                .formLogin()//можно указать свою форму
+                .formLogin()
+                .defaultSuccessUrl("/")
                 .and()
-                .logout();
+                .logout()
+                .invalidateHttpSession(true);
     }
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder(){
-//        return new BCryptPasswordEncoder();
-//    }
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(){

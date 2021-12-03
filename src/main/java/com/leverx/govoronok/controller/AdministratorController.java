@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/administration")
 public class AdministratorController {
@@ -26,7 +28,7 @@ public class AdministratorController {
     }
 
     @GetMapping("/comments")
-    public String getAllUnconfirmedComments(Model model) {
+    public String getAllUnconfirmedComments(Model model, Principal principal) {
         model.addAttribute("comments", commentService.getAllUnconfirmedComments());
         return "comment/unconfirmedComments";
     }

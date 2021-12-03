@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/")
     public String redirectToSingIn(){
-        return "redirect:/signup";
+        return "redirect:/traders";
     }
 
     @GetMapping("/signup")
@@ -50,12 +50,6 @@ public class UserController {
     @GetMapping("/authentication/confirmAlert")
     public String getConfirmAlert() {
         return "/authentication/confirmAlert";
-    }
-
-    @GetMapping("/signin")
-    public String login(Model model) {
-        //model.addAttribute("user", new User());
-        return "/authentication/signin";
     }
 
     @GetMapping("/traders")
