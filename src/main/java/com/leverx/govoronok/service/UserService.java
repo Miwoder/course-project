@@ -63,6 +63,15 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public void resetPasswordForUserByEmail(String email){
+        UUID code = UUID.randomUUID();
+        try(Jedis jedis = jedisPool.getResource()){
+            jedis.set(code.toString() , email);
+            jedis.expire(code.toString(), 3600);
+            sendMessageForResetPasswordToUserByEmail(email, code);
+        }
+    }
+
     public List<User> getAllUnconfirmedUsers(Role traderRole){
         return userRepository.getUsersByApprovedIsTrueAndConfirmedByAdminFalseAndRoleIs(traderRole);
     }
@@ -82,6 +91,21 @@ public class UserService implements UserDetailsService {
             userRepository.save(user.get());
         } else {
             System.out.println("ERROR WITH APPR");
+        }
+    }
+
+    public void setNewPasswordWithCode(UUID code, String password){
+        try(Jedis jedis = jedisPool.getResource()){
+            String email = jedis.get(code.toString());
+            User user = findByUsername(email);
+            if(user!=null){
+                user.setPassword(passwordEncoder.encode(password));
+                userRepository.save(user);
+                jedis.del(code.toString());
+            }
+            else{
+                System.out.println("USER NOT FOUND");
+            }
         }
     }
 
@@ -116,6 +140,18 @@ public class UserService implements UserDetailsService {
         message.setSubject("Confirm registration");
         message.setText("Follow this link to continue registration: http://localhost:8086/authentication/confirm/" + code +
                 "\n Please, note if you are trader you should wait until administration confirmed you too");
+        emailSender.send(message);
+    }
+
+    public void sendMessageForResetPasswordToUserByEmail(String email, UUID code) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("hovor007@gmail.com");
+        message.setTo(email);
+        message.setSubject("Reset password");
+        message.setText("Follow this link if you'd like to reset your password: http://localhost:8086/authentication/reset"
+                + "\n Your code: " + code +
+                "\n This code will expire in 1 hour" +
+                "\n If you don't want to reset your password, please ignore this message and your password will not be changed");
         emailSender.send(message);
     }
 

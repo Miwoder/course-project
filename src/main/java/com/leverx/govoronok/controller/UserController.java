@@ -54,6 +54,31 @@ public class UserController {
         return "/authentication/signin";
     }
 
+    @GetMapping("/authentication/forgot_password")
+    public String resetPassword(){
+        return "/authentication/resetPassword";
+    }
+
+    @PostMapping("/authentication/forgot_password")
+    public String resetPassword(Model model, @ModelAttribute("username") String username) {
+        userService.resetPasswordForUserByEmail(username);
+        return "redirect:/authentication/confirmAlert";
+    }
+
+    @GetMapping("/authentication/reset")
+    public String setNewPassword(){
+        return "authentication/newPassword";
+    }
+
+    @PostMapping("/authentication/reset")
+    public String setNewPassword(@ModelAttribute("code") UUID code,
+                                 String password, String passwordConfirm) {
+        if(password.equals(passwordConfirm)){
+            userService.setNewPasswordWithCode(code , password);
+        }
+        return "redirect:/signin";
+    }
+
     @GetMapping("/authentication/confirm/{code}")
     public String confirmUserCode(@PathVariable("code") UUID code) {
         userService.confirmUser(code);
