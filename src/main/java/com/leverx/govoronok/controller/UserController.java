@@ -47,6 +47,12 @@ public class UserController {
         return "redirect:/authentication/confirmAlert";
     }
 
+    @GetMapping("/signin")
+    public String signin(){
+        return "/authentication/signin";
+    }
+
+
     @GetMapping("/authentication/confirmAlert")
     public String getConfirmAlert() {
         return "/authentication/confirmAlert";
