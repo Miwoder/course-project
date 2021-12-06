@@ -1,9 +1,6 @@
 package com.leverx.govoronok.controller;
 
-import com.leverx.govoronok.model.Comment;
-import com.leverx.govoronok.model.Game;
-import com.leverx.govoronok.model.Role;
-import com.leverx.govoronok.model.User;
+import com.leverx.govoronok.model.*;
 import com.leverx.govoronok.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 
 @Controller
@@ -52,6 +54,11 @@ public class UserController {
         return "/authentication/signin";
     }
 
+    @GetMapping("/authentication/confirm/{code}")
+    public String confirmUserCode(@PathVariable("code") UUID code) {
+        userService.confirmUser(code);
+        return "redirect:/signin";
+    }
 
     @GetMapping("/authentication/confirmAlert")
     public String getConfirmAlert() {
@@ -62,7 +69,6 @@ public class UserController {
     public String getAllTraders(Model model) {
         model.addAttribute("newUser", new User());
         model.addAttribute("traders", userService.getAllTraders(Role.TRADER));
-        //model.addAttribute("rating", userService.getUserRatingByAllCommentsById(29L));
         return "user/traders";
     }
 

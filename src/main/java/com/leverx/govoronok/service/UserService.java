@@ -48,6 +48,21 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public void confirmUser(UUID code){
+        try(Jedis jedis = jedisPool.getResource()){
+            String email = jedis.get(code.toString());
+            User user = findByUsername(email);
+            if(user!=null){
+                user.setApproved(Boolean.TRUE);
+                userRepository.save(user);
+                //jedis.del(code.toString());
+            }
+            else{
+                System.out.println("USER NOT FOUND");
+            }
+        }
+    }
+
     public List<User> getAllUnconfirmedUsers(Role traderRole){
         return userRepository.getUsersByApprovedIsTrueAndConfirmedByAdminFalseAndRoleIs(traderRole);
     }
@@ -99,7 +114,8 @@ public class UserService implements UserDetailsService {
         message.setFrom("hovor007@gmail.com");
         message.setTo(email);
         message.setSubject("Confirm registration");
-        message.setText("Follow this link to continue registration" + code);
+        message.setText("Follow this link to continue registration: http://localhost:8086/authentication/confirm/" + code +
+                "\n Please, note if you are trader you should wait until administration confirmed you too");
         emailSender.send(message);
     }
 

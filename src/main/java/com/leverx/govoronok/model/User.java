@@ -48,15 +48,15 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false)
     private Role role;
 
-    @OneToMany(mappedBy = "trader", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "trader", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     private Set<Comment> commentsForThisUser;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     private Set<Comment> commentsByThisUser;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     private Set<GameObject> gameObjects;
 
