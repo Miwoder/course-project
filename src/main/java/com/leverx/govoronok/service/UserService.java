@@ -15,11 +15,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service("userService")
@@ -27,19 +26,26 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private JavaMailSender emailSender;
+    private JedisPool jedisPool;
 
 
     @Autowired
-    public UserService(UserRepository userRepository,PasswordEncoder passwordEncoder, JavaMailSender emailSender){
+    public UserService(UserRepository userRepository,PasswordEncoder passwordEncoder, JavaMailSender emailSender, JedisPool jedisPool){
+        this.jedisPool = jedisPool;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.emailSender = emailSender;
     }
 
     public void addNewUser(User user){
-        sendConfirmMessageToUserByEmail(user.getEmail());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        UUID code = UUID.randomUUID();
+        try(Jedis jedis = jedisPool.getResource()){
+            jedis.set(code.toString() ,user.getEmail());
+            jedis.expire(code.toString(), 86400);
+            sendConfirmMessageToUserByEmail(user.getEmail(), code);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+        }
     }
 
     public List<User> getAllUnconfirmedUsers(Role traderRole){
@@ -88,13 +94,14 @@ public class UserService implements UserDetailsService {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
     }
 
-    public void sendConfirmMessageToUserByEmail(String email) {
+    public void sendConfirmMessageToUserByEmail(String email, UUID code) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("hovor007@gmail.com");
         message.setTo(email);
         message.setSubject("Confirm registration");
-        message.setText("Follow this link to continue registration");
+        message.setText("Follow this link to continue registration" + code);
         emailSender.send(message);
     }
+
 
 }
