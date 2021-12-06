@@ -55,7 +55,7 @@ public class UserService implements UserDetailsService {
             if(user!=null){
                 user.setApproved(Boolean.TRUE);
                 userRepository.save(user);
-                //jedis.del(code.toString());
+                jedis.del(code.toString());
             }
             else{
                 System.out.println("USER NOT FOUND");
