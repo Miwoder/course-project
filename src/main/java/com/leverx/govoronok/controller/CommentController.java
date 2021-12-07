@@ -7,9 +7,11 @@ import com.leverx.govoronok.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
@@ -45,30 +47,36 @@ public class CommentController {
         return "comment/allComments";
     }
 
-    //TODO: correct mapping
     @PostMapping("/{id}/comments")
-    public String addNewComment(Principal principal, Model model, @PathVariable("id") Long traderId, @ModelAttribute("newComment") Comment newComment) {
+    public String addNewComment(Principal principal, @PathVariable("id") Long traderId, @ModelAttribute("newComment") Comment newComment) {
         newComment.setTrader(userService.getUserById(traderId).get());
         User user = userService.findByUsername(principal.getName());
         newComment.setAuthor(user);
         commentService.addNewComment(newComment);
-        return "redirect:/comment/confirmComment";
+        return "redirect:/users/comment/confirmComment";
     }
 
     @GetMapping("/{id}/comments/{commentId}/edit")
     public String editCommentForUser(Model model, @PathVariable("id") Long traderId,
-                                    @PathVariable("commentId") Long commentId) {
-        Comment comment = commentService.getCommentForUserByCommentId(commentId, traderId);
+                                    @PathVariable("commentId") Long commentId, Principal principal) {
+        if(!commentService.getCommentById(commentId).get().getAuthor().getId().equals(userService.findByUsername(principal.getName()).getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author");
+        }
+            Comment comment = commentService.getCommentForUserByCommentId(commentId, traderId);
         model.addAttribute("comment", comment);
-        return "redirect:/comment/commentEdit";
+        return "/comment/commentEdit";
     }
 
-    //TODO: Add author
     @PutMapping("/{id}/comments/{commentId}")
-    public String updateComment(Model model, @PathVariable("id") Long traderId, @ModelAttribute("newComment") Comment updatedComment,
+    public String updateComment(@PathVariable("id") Long traderId, Principal principal, @ModelAttribute("newComment") Comment updatedComment,
                                 @PathVariable("commentId") Long commentId) {
-        commentService.updateComment(commentId, updatedComment);
-        return "redirect:/comment/confirmComment";
+        if(commentService.getCommentById(commentId).get().getAuthor().getId().equals(userService.findByUsername(principal.getName()).getId())) {
+            commentService.updateComment(commentId, updatedComment);
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author");
+        }
+        return "redirect:/users/comment/confirmComment";
     }
 
     @GetMapping("/comment/confirmComment")
@@ -76,12 +84,17 @@ public class CommentController {
         return "/comment/confirmComment";
     }
 
-    //TODO:delete by author
+    //TODO:DELETE!!!
     @DeleteMapping("/{traderId}/comments/{commentId}")
-    public String deleteCommentForTraderByAuthor(Model model, @PathVariable("traderId") Long traderId,
-                                                 @PathVariable("commentId") Long commentId){
-        commentService.deleteCommentById(commentId);
-        return null;
+    public String deleteCommentForTraderByAuthor(@PathVariable("traderId") Long traderId,
+                                                 Principal principal, @PathVariable("commentId") Long commentId){
+        if(commentService.getCommentById(commentId).get().getAuthor().getId().equals(userService.findByUsername(principal.getName()).getId())) {
+            commentService.deleteCommentById(commentId);
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author");
+        }
+        return "redirect:/traders";
     }
 
 }

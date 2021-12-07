@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Comment</title>
@@ -20,6 +20,13 @@
         <td th:text="${comment.getRating()}"/>
     </tr>
 </table>
+
+<form th:method="DELETE" th:action="@{/users/{traderId}/comments/{commentId}(traderId=${id}, commentId=${commentId})}">
+    <input type="submit" value="Delete"/>
+</form>
+<form th:method="GET" th:action="@{/users/{id}/comments/{commentId}/edit(id=${id}, commentId=${commentId})}">
+    <input type="submit" value="Edit"/>
+</form>
 
 </body>
 </html>

@@ -1,10 +1,7 @@
 package com.leverx.govoronok.service;
 
 import com.leverx.govoronok.model.Comment;
-import com.leverx.govoronok.model.Game;
-import com.leverx.govoronok.model.User;
 import com.leverx.govoronok.repository.CommentRepository;
-import com.leverx.govoronok.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +35,10 @@ public class CommentService {
 
     public void deleteCommentById(Long id){
         commentRepository.deleteById(id);
+    }
+
+    public Optional<Comment> getCommentById(Long id){
+        return commentRepository.findById(id);
     }
 
     public void updateComment(Long id, Comment updatedComment){

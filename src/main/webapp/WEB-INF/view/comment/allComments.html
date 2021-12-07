@@ -12,12 +12,18 @@
         <th>author</th>
         <th>createdAt</th>
         <th>rating</th>
+        <th/>
     </tr>
     <tr th:each="comment : ${comments}">
         <td th:text="${comment.getMessage()}"/>
         <td th:text="${comment.getAuthor().getFirstName()}"/>
         <td th:text="${comment.getCreatedAt()}"/>
         <td th:text="${comment.getRating()}"/>
+        <td>
+            <form th:method="GET" th:action="@{/users/{id}/comments/{commentId}(id=${id}, commentId=${comment.getId})}">
+                <input type="submit" value="Comment info"/>
+            </form>
+        </td>
     </tr>
 </table>
 
