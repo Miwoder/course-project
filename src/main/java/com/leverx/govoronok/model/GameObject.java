@@ -2,7 +2,7 @@ package com.leverx.govoronok.model;
 
 
 import lombok.*;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -23,17 +23,17 @@ public class GameObject {
     private String title;
 
     @Column(name = "createdAt", nullable = false)
-    private LocalDate createdAt = LocalDate.now();;
+    private LocalDate createdAt = LocalDate.now();
 
     @Column(name = "updatedAt", nullable = false)
-    @LastModifiedDate
+    @UpdateTimestamp
     private LocalDate updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "authorId", nullable = false)
     private User author;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "gameId", nullable = false)
     private Game game;
 }

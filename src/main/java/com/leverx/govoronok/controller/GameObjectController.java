@@ -1,10 +1,7 @@
 package com.leverx.govoronok.controller;
 
 
-import com.leverx.govoronok.model.Comment;
-import com.leverx.govoronok.model.GameObject;
-import com.leverx.govoronok.model.Role;
-import com.leverx.govoronok.model.User;
+import com.leverx.govoronok.model.*;
 import com.leverx.govoronok.service.GameObjectService;
 import com.leverx.govoronok.service.GameService;
 import com.leverx.govoronok.service.UserService;
@@ -13,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,11 +25,13 @@ public class GameObjectController {
 
     private GameObjectService gameObjectService;
     private UserService userService;
+    private GameService gameService;
 
     @Autowired
-    public GameObjectController(GameObjectService gameObjectService, UserService userService){
+    public GameObjectController(GameObjectService gameObjectService, UserService userService, GameService gameService){
         this.gameObjectService = gameObjectService;
         this.userService = userService;
+        this.gameService = gameService;
     }
 
     @GetMapping("/users/{id}/objects")
@@ -41,6 +41,7 @@ public class GameObjectController {
         return "gameObject/gameObjects";
     }
 
+    @Transactional
     @GetMapping("/my")
     public String getMyObjects(Model model, Principal principal) {
         if(userService.findByUsername(principal.getName()).getRole().equals(Role.USER)) {
@@ -48,17 +49,20 @@ public class GameObjectController {
         }
         else{
             List<GameObject> gameObjects = gameObjectService.getGameObjectsForUserById(userService.findByUsername(principal.getName()).getId());
+
             model.addAttribute("gameObjects", gameObjects);
             model.addAttribute("traderId",  userService.findByUsername(principal.getName()).getId());
             model.addAttribute("newGameObject", new GameObject());
+//            String game = null;
+//            model.addAttribute("game", game);
             return "gameObject/myPage";
         }
     }
 
-    @PostMapping("/users/{traderId}/objects/")
-    public String addNewComment(Principal principal, @PathVariable("traderId") Long traderId,
-                                @ModelAttribute("newObject") GameObject newGameObject) {
+    @PostMapping("/my")
+    public String addNewComment(Principal principal, @ModelAttribute("newObject") GameObject newGameObject) {
         newGameObject.setAuthor(userService.findByUsername(principal.getName()));
+        newGameObject.setGame(gameService.getGameByName(newGameObject.getGame().getName()));
         gameObjectService.addNewGameObject(newGameObject);
         return "redirect:/my";
     }

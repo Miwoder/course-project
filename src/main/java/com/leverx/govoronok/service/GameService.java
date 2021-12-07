@@ -34,7 +34,10 @@ public class GameService {
         return gameRepository.findById(id);
     }
 
-    @PreAuthorize("hasAuthority('USER')")
+    public Game getGameByName(String name){
+        return gameRepository.getGameByName(name);
+    }
+
     public void updateGame(Long id, Game updatedGame){
         Optional<Game> gameToBeUpdated = gameRepository.findById(id);
         if (gameToBeUpdated.isPresent()) {

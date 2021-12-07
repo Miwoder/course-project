@@ -33,12 +33,12 @@
 
 <h3>Add new game object</h3>
 
-<form method="POST" th:object="${newGameObject}" th:action="@{/users/{traderId}/objects(traderId=${traderId})}">
+<form method="POST" th:object="${newGameObject}" th:action="@{/my}">
     <label for="title">Title: </label>
     <input type="text" th:field="*{title}" id="title"/>
     <br/>
     <label for="game">Game: </label>
-    <input type="text" th:field="*{game}" id="game"/>
+    <input type="text" th:field="*{game.name}" id="game"/>
     <br/>
     <input type="submit" value="Add game object"/>
 </form>

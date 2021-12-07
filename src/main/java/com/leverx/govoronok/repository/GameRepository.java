@@ -8,4 +8,5 @@ import java.util.List;
 
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
+    Game getGameByName(String name);
 }
