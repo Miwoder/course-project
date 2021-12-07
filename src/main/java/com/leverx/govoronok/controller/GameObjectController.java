@@ -4,6 +4,7 @@ package com.leverx.govoronok.controller;
 import com.leverx.govoronok.model.Comment;
 import com.leverx.govoronok.model.GameObject;
 import com.leverx.govoronok.model.Role;
+import com.leverx.govoronok.model.User;
 import com.leverx.govoronok.service.GameObjectService;
 import com.leverx.govoronok.service.GameService;
 import com.leverx.govoronok.service.UserService;
@@ -13,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
@@ -50,8 +49,59 @@ public class GameObjectController {
         else{
             List<GameObject> gameObjects = gameObjectService.getGameObjectsForUserById(userService.findByUsername(principal.getName()).getId());
             model.addAttribute("gameObjects", gameObjects);
-            return "gameObject/gameObjects";
+            model.addAttribute("traderId",  userService.findByUsername(principal.getName()).getId());
+            model.addAttribute("newGameObject", new GameObject());
+            return "gameObject/myPage";
         }
+    }
+
+    @PostMapping("/users/{traderId}/objects/")
+    public String addNewComment(Principal principal, @PathVariable("traderId") Long traderId,
+                                @ModelAttribute("newObject") GameObject newGameObject) {
+        newGameObject.setAuthor(userService.findByUsername(principal.getName()));
+        gameObjectService.addNewGameObject(newGameObject);
+        return "redirect:/my";
+    }
+
+
+
+    @GetMapping("/users/{traderId}/objects/{objectId}/edit")
+    public String editGameObject(Model model, @PathVariable("traderId") Long traderId,
+                                     @PathVariable("objectId") Long objectId, Principal principal) {
+        if(!gameObjectService.getGameObjectById(objectId).get().getAuthor().getId().equals(userService.findByUsername(principal.getName()).getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author");
+        }
+        model.addAttribute("gameObject", gameObjectService.getGameObjectById(objectId));
+        return "/gameObject/gameObjectEdit";
+    }
+
+    @PatchMapping("/users/{traderId}/objects/{objectId}")
+    public String updateGameObject(@PathVariable("traderId") Long traderId, Principal principal,
+                                @ModelAttribute("newObject") GameObject updatedObject, @PathVariable("objectId") Long objectId) {
+        if(gameObjectService.getGameObjectById(objectId).get().getAuthor().getId().equals(userService.findByUsername(principal.getName()).getId())) {
+            gameObjectService.updateGameObjectById(objectId, updatedObject);
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author");
+        }
+        return "redirect:/my";
+    }
+
+
+
+
+
+
+    @DeleteMapping("/users/{traderId}/objects/{objectId}")
+    public String deleteGameObjectForTrader(@PathVariable("traderId") Long traderId,
+                                                 Principal principal, @PathVariable("objectId") Long objectId){
+        if(gameObjectService.getGameObjectById(objectId).get().getAuthor().getId().equals(userService.findByUsername(principal.getName()).getId())) {
+            gameObjectService.deleteGameObjectById(objectId);
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author");
+        }
+        return "redirect:/my";
     }
 
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Game objects</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Game name</th>
+        <th>Game genre</th>
+        <th>Created</th>
+        <th>Updated</th>
+        <th/>
+    </tr>
+    <tr th:each="gameObject : ${gameObjects}">
+        <td th:text="${gameObject.getTitle()}"/>
+        <td th:text="${gameObject.getGame().getName()}"/>
+        <td th:text="${gameObject.getGame().getGenre()}"/>
+        <td th:text="${gameObject.getCreatedAt()}"/>
+        <td th:text="${gameObject.getUpdatedAt()}"/>
+        <td>
+            <form th:method="DELETE" th:action="@{/users/{traderId}/objects/{objectId}(traderId=${traderId}, objectId=${gameObject.getId()})}">
+                <input type="submit" value="Delete"/>
+            </form>
+            <form th:method="GET" th:action="@{/users/{traderId}/objects/{objectId}/edit(traderId=${traderId}, objectId=${gameObject.getId()})}">
+                <input type="submit" value="Edit"/>
+            </form></td>
+    </tr>
+</table>
+
+<h3>Add new game object</h3>
+
+<form method="POST" th:object="${newGameObject}" th:action="@{/users/{traderId}/objects(traderId=${traderId})}">
+    <label for="title">Title: </label>
+    <input type="text" th:field="*{title}" id="title"/>
+    <br/>
+    <label for="game">Game: </label>
+    <input type="text" th:field="*{game}" id="game"/>
+    <br/>
+    <input type="submit" value="Add game object"/>
+</form>
+
+</body>
+</html>

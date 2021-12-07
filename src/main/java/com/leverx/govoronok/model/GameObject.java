@@ -23,7 +23,7 @@ public class GameObject {
     private String title;
 
     @Column(name = "createdAt", nullable = false)
-    private LocalDate createdAt;
+    private LocalDate createdAt = LocalDate.now();;
 
     @Column(name = "updatedAt", nullable = false)
     @LastModifiedDate

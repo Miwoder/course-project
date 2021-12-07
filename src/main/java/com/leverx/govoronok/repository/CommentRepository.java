@@ -18,6 +18,4 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> getCommentsByApprovedIsFalse();
 
-    void deleteCommentByIdAndTrader_IdAndAuthor_Id(Long commentId, Long traderId, Long AuthorId);
-
 }
