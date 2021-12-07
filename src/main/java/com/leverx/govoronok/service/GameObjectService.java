@@ -20,4 +20,5 @@ public class GameObjectService {
     public List<GameObject> getGameObjectsForUserById(Long id){
         return gameObjectRepository.getGameObjectsByAuthor_Id(id);
     }
+
 }
