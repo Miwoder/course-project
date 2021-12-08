@@ -6,8 +6,8 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/users/{traderId}/objects/{objectId}(traderId=${gameObject.get().getAuthor().getId()} ,
- objectId=${gameObject.get().getId()})}" th:object="${gameObject}">
+<form th:method="PATCH" th:action="@{/users/{traderId}/objects/{objectId}(traderId=${gameObject.getAuthor().getId()} ,
+ objectId=${gameObject.getId()})}" th:object="${gameObject}">
     <label for="title">Title: </label>
     <input type="text" th:field="*{title}" id="title"/>
     <br/>

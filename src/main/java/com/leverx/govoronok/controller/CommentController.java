@@ -84,10 +84,8 @@ public class CommentController {
         return "/comment/confirmComment";
     }
 
-    //TODO:DELETE!!!
     @DeleteMapping("/{traderId}/comments/{commentId}")
-    public String deleteCommentForTrader(@PathVariable("traderId") Long traderId,
-                                                 Principal principal, @PathVariable("commentId") Long commentId){
+    public String deleteCommentForTrader(Principal principal, @PathVariable("commentId") Long commentId){
         if(commentService.getCommentById(commentId).get().getAuthor().getId().equals(userService.findByUsername(principal.getName()).getId())) {
             commentService.deleteCommentById(commentId);
         }

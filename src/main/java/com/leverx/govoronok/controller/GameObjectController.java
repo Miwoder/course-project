@@ -5,12 +5,10 @@ import com.leverx.govoronok.model.*;
 import com.leverx.govoronok.service.GameObjectService;
 import com.leverx.govoronok.service.GameService;
 import com.leverx.govoronok.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,20 +17,14 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
+@Slf4j
 public class GameObjectController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GameObject.class);
+    private final GameObjectService gameObjectService;
+    private final UserService userService;
+    private final GameService gameService;
 
-    private GameObjectService gameObjectService;
-    private UserService userService;
-    private GameService gameService;
-
-    @Autowired
-    public GameObjectController(GameObjectService gameObjectService, UserService userService, GameService gameService){
-        this.gameObjectService = gameObjectService;
-        this.userService = userService;
-        this.gameService = gameService;
-    }
 
     @GetMapping("/users/{id}/objects")
     public String getAllUserComments(Model model, @PathVariable("id") Long id) {
@@ -41,7 +33,6 @@ public class GameObjectController {
         return "gameObject/gameObjects";
     }
 
-    @Transactional
     @GetMapping("/my")
     public String getMyObjects(Model model, Principal principal) {
         if(userService.findByUsername(principal.getName()).getRole().equals(Role.USER)) {
@@ -49,12 +40,9 @@ public class GameObjectController {
         }
         else{
             List<GameObject> gameObjects = gameObjectService.getGameObjectsForUserById(userService.findByUsername(principal.getName()).getId());
-
             model.addAttribute("gameObjects", gameObjects);
             model.addAttribute("traderId",  userService.findByUsername(principal.getName()).getId());
             model.addAttribute("newGameObject", new GameObject());
-//            String game = null;
-//            model.addAttribute("game", game);
             return "gameObject/myPage";
         }
     }
@@ -67,15 +55,13 @@ public class GameObjectController {
         return "redirect:/my";
     }
 
-
-
     @GetMapping("/users/{traderId}/objects/{objectId}/edit")
-    public String editGameObject(Model model, @PathVariable("traderId") Long traderId,
-                                     @PathVariable("objectId") Long objectId, Principal principal) {
-        if(!gameObjectService.getGameObjectById(objectId).get().getAuthor().getId().equals(userService.findByUsername(principal.getName()).getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author");
-        }
-        model.addAttribute("gameObject", gameObjectService.getGameObjectById(objectId));
+    public String editGameObject(Model model, @PathVariable("objectId") Long objectId, Principal principal) {
+        GameObject gameObject = gameObjectService.getGameObjectById(objectId)
+                .filter(gameObj -> gameObj.getAuthor().getId().equals(userService.findByUsername(principal.getName()).getId()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author"));
+
+        model.addAttribute("gameObject", gameObject);
         return "/gameObject/gameObjectEdit";
     }
 
