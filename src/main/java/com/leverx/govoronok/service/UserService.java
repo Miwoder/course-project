@@ -21,7 +21,7 @@ import redis.clients.jedis.JedisPool;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service("userService")
+@Service
 public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;

@@ -18,6 +18,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User getUserByEmail(String email);
 
-//    @Query(value = "SELECT avg(Comment.rating) FROM Comment WHERE Comment.trader.id=?1")
-//    Integer getAverageRatingForUserById(Long id);
 }
