@@ -39,25 +39,25 @@ public class AdministratorController {
         return "authentication/unconfirmedUsers";
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/users/{id}")
     public String deleteUser(@PathVariable("id") Long userId) {
         userService.deleteUserById(userId);
         return "redirect:/administration/users";
     }
 
-    @PatchMapping("/user/{id}")
+    @PatchMapping("/users/{id}")
     public String approveUser(@PathVariable("id") Long userId) {
         userService.setApprovedStatusToUserById(userId);
         return "redirect:/administration/users";
     }
 
-    @DeleteMapping("/comment/{id}")
+    @DeleteMapping("/comments/{id}")
     public String deleteComment(@PathVariable("id") Long commentId) {
         commentService.deleteCommentById(commentId);
             return "redirect:/administration/comments";
     }
 
-    @PatchMapping("/comment/{id}")
+    @PatchMapping("/comments/{id}")
     public String approveComment(@PathVariable("id") Long commentId) {
         commentService.setApprovedStatusToCommentById(commentId);
         return "redirect:/administration/comments";

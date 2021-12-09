@@ -24,10 +24,10 @@
         <td th:text="${user.getCreatedAt()}"/>
         <td th:text="${user.getRole()}"/>
         <td>
-            <form th:method="DELETE" th:action="@{/administration/user/{id}(id=${user.getId()})}">
+            <form th:method="DELETE" th:action="@{/administration/users/{id}(id=${user.getId()})}">
                 <input type="submit" value="Delete"/>
             </form>
-            <form th:method="PATCH" th:action="@{/administration/user/{id}(id=${user.getId()})}">
+            <form th:method="PATCH" th:action="@{/administration/users/{id}(id=${user.getId()})}">
                 <input type="submit" value="Approve"/>
             </form>
         </td>

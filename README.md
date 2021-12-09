@@ -51,3 +51,14 @@ Main endpoints:
 | GET           | /games                              | get all games                |
 | POST          | /games/new                          | add new game                 |
 | PUT           | /games/{id}/edit                    | edit game                    |
+
+#### `Admin service:`
+
+| Method        | Path                                | Description                  |
+| ------------- |:-----------------------------------:|:----------------------------:|
+| GET           | /administration/comments            | get all unconfirmed comments |
+| GET           | /administration/users               | get all unconfirmed users    |
+| PATCH         | /administration/comments/{id}       | approve comment              |
+| PATCH         | /administration/users/{id}          | approve trader               |
+| DELETE        | /administration/comments/{id}       | decline commen               |
+| DELETE        | /administration/users/{id}          | decline trader               |
