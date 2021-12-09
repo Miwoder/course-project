@@ -25,9 +25,8 @@ public class GameObjectController {
     private final UserService userService;
     private final GameService gameService;
 
-
     @GetMapping("/users/{id}/objects")
-    public String getAllUserComments(Model model, @PathVariable("id") Long id) {
+    public String getAllUserGameObjects(Model model, @PathVariable("id") Long id) {
         List<GameObject> gameObjects = gameObjectService.getGameObjectsForUserById(id);
         model.addAttribute("gameObjects", gameObjects);
         return "gameObject/gameObjects";
@@ -77,11 +76,6 @@ public class GameObjectController {
         return "redirect:/my";
     }
 
-
-
-
-
-
     @DeleteMapping("/users/{traderId}/objects/{objectId}")
     public String deleteGameObjectForTrader(@PathVariable("traderId") Long traderId,
                                                  Principal principal, @PathVariable("objectId") Long objectId){
@@ -93,6 +87,4 @@ public class GameObjectController {
         }
         return "redirect:/my";
     }
-
-
 }
