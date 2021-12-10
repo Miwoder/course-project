@@ -35,9 +35,11 @@
 
 <form method="POST" th:object="${newGameObject}" th:action="@{/my}">
     <label for="title">Title: </label>
+    <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title incorrect</div>
     <input type="text" th:field="*{title}" id="title"/>
     <br/>
     <label for="game">Game: </label>
+    <div style="color: red" th:if="${#fields.hasErrors('game')}" th:errors="*{game}">Game incorrect</div>
     <input type="text" th:field="*{game.name}" id="game"/>
     <br/>
     <input type="submit" value="Add game object"/>

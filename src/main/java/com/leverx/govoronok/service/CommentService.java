@@ -2,20 +2,16 @@ package com.leverx.govoronok.service;
 
 import com.leverx.govoronok.model.Comment;
 import com.leverx.govoronok.repository.CommentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
-    private CommentRepository commentRepository;
-
-    @Autowired
-    public CommentService(CommentRepository commentRepository){
-        this.commentRepository = commentRepository;
-    }
+    private final CommentRepository commentRepository;
 
     public List<Comment> getCommentsForUserById(Long id){
         return commentRepository.getCommentsByTrader_IdAndApprovedIsTrue(id);

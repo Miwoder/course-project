@@ -2,11 +2,13 @@ package com.leverx.govoronok.controller;
 
 import com.leverx.govoronok.model.*;
 import com.leverx.govoronok.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +18,10 @@ import java.util.UUID;
 
 
 @Controller
+@RequiredArgsConstructor
+@Slf4j
 public class UserController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
-
-    private UserService userService;
-
-    @Autowired
-    public UserController(UserService userService){
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @GetMapping("/")
     public String redirectToSingIn(){
@@ -38,7 +35,10 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String addNewUser(@ModelAttribute("user") User user) {
+    public String addNewUser(@Valid @ModelAttribute("user") User user, Errors errors, BindingResult bindingResult) {
+        if(errors.hasErrors() || bindingResult.hasErrors()){
+            return "redirect:/signup";
+        }
         if(user.getRole()==Role.USER){
             user.setConfirmedByAdmin(Boolean.TRUE);
         }
@@ -57,7 +57,10 @@ public class UserController {
     }
 
     @PostMapping("/authentication/forgot_password")
-    public String resetPassword(Model model, @ModelAttribute("username") String username) {
+    public String resetPassword(Model model, @Valid @ModelAttribute("username") String username, Errors errors, BindingResult bindingResult) {
+        if(errors.hasErrors() || bindingResult.hasErrors()){
+            return "redirect:/signin";
+        }
         userService.resetPasswordForUserByEmail(username);
         return "redirect:/authentication/confirmAlert";
     }
@@ -68,8 +71,11 @@ public class UserController {
     }
 
     @PostMapping("/authentication/reset")
-    public String setNewPassword(@ModelAttribute("code") UUID code,
-                                 String password, String passwordConfirm) {
+    public String setNewPassword(@Valid @ModelAttribute("code") UUID code, @Valid String password,
+                                 @Valid String passwordConfirm, Errors errors) {
+        if(errors.hasErrors()){
+            return "redirect:/signin";
+        }
         if(password.equals(passwordConfirm)){
             userService.setNewPasswordWithCode(code , password);
         }
@@ -95,7 +101,10 @@ public class UserController {
     }
 
     @PostMapping("/traders")
-    public String addNewTraderByUser(Model model, @ModelAttribute("newUser") User newUser) {
+    public String addNewTraderByUser(Model model, @Valid @ModelAttribute("newUser") User newUser, Errors errors) {
+        if(errors.hasErrors()){
+            return "redirect:/traders";
+        }
         newUser.setRole(Role.TRADER);
         newUser.setEmail("adminmail@mail.com");
         newUser.setPassword("jayehfub");

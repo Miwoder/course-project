@@ -4,9 +4,8 @@ import com.leverx.govoronok.model.Comment;
 import com.leverx.govoronok.model.User;
 import com.leverx.govoronok.service.CommentService;
 import com.leverx.govoronok.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,19 +16,13 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/users")
 public class CommentController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
-
-    private CommentService commentService;
-    private UserService userService;
-
-    @Autowired
-    public CommentController(CommentService commentService,  UserService userService){
-        this.commentService = commentService;
-        this.userService = userService;
-    }
+    private final CommentService commentService;
+    private final UserService userService;
 
     @GetMapping("/{id}/comments/{commentId}")
     public String getCommentForUser(Model model, @PathVariable("id") Long traderId,

@@ -1,9 +1,11 @@
 package com.leverx.govoronok.model;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -24,18 +26,27 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "firstName", nullable = false)
+    @NotBlank(message = "First name can't be empty")
+    @Size(min = 2, message = "First name can't be less 2 symbols")
     private String firstName;
 
     @Column(name = "lastName", nullable = false)
+    @NotBlank(message = "Last name can't be empty")
+    @Size(min = 2, message = "Last name can't be less 2 symbols")
     private String lastName;
 
     @Column(name = "password", nullable = false)
+    @NotBlank(message = "Password can't be empty")
+    @Size(min = 3, message = "Password can't be less 6 symbols")
     private String password;
 
     @Column(name = "email", nullable = false)
+    @NotBlank(message = "Email can't be empty")
+    @Email(message = "Invalid email")
     private String email;
 
     @Column(name = "createdAt", nullable = false)
+    @NotBlank(message = "Created date can't be empty")
     private LocalDate createdAt = LocalDate.now();
 
     @Column(name = "approved", nullable = false)
@@ -46,6 +57,7 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
+    @NotBlank(message = "Role can't be empty")
     private Role role;
 
     @OneToMany(mappedBy = "trader", fetch = FetchType.EAGER,

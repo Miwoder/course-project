@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Edit game</title>
@@ -8,9 +8,11 @@
 
 <form th:method="PUT" th:action="@{/games/{id}(id=${game.getId()})}" th:object="${game}">
     <label for="name">Enter name: </label>
+    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name incorrect</div>
     <input type="text" th:field="*{name}" id="name"/>
     <br/>
     <label for="gameGenre">Select game genre: </label>
+    <div style="color: red" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}">Genre incorrect</div>
     <select class="form-control" th:field="*{genre}"  id="gameGenre" >
         <option th:each="gameGenre : ${gameGenres}"
                 th:value="${gameGenre.gameGenre}"

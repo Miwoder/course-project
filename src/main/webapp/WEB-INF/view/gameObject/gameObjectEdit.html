@@ -9,6 +9,7 @@
 <form th:method="PATCH" th:action="@{/users/{traderId}/objects/{objectId}(traderId=${gameObject.getAuthor().getId()} ,
  objectId=${gameObject.getId()})}" th:object="${gameObject}">
     <label for="title">Title: </label>
+    <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title incorrect</div>
     <input type="text" th:field="*{title}" id="title"/>
     <br/>
     <input type="submit" value="Update game object"/>

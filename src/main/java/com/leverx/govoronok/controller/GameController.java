@@ -3,11 +3,8 @@ package com.leverx.govoronok.controller;
 import com.leverx.govoronok.model.Game;
 import com.leverx.govoronok.model.GameGenre;
 import com.leverx.govoronok.service.GameService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +15,10 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/games")
+@RequiredArgsConstructor
+@Slf4j
 public class GameController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
-
-    private GameService gameService;
-
-    @Autowired
-    public GameController(GameService gameService){
-        this.gameService = gameService;
-    }
+    private final GameService gameService;
 
     @GetMapping()
     public String getAllGames(Model model) {

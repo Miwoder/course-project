@@ -1,11 +1,9 @@
 package com.leverx.govoronok.model;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -19,9 +17,13 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(name = "name", nullable = false)
+    @NotBlank(message = "Name can't be empty")
     private String name;
+
     @Column(name = "genre", nullable = false)
+    @NotBlank(message = "Genre can't be empty")
     private GameGenre genre;
 
     @OneToMany(mappedBy = "game", fetch = FetchType.LAZY,

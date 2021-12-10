@@ -3,8 +3,7 @@ package com.leverx.govoronok.service;
 import com.leverx.govoronok.model.Role;
 import com.leverx.govoronok.model.User;
 import com.leverx.govoronok.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -22,20 +20,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
-    private JavaMailSender emailSender;
-    private JedisPool jedisPool;
-
-
-    @Autowired
-    public UserService(UserRepository userRepository,PasswordEncoder passwordEncoder, JavaMailSender emailSender, JedisPool jedisPool){
-        this.jedisPool = jedisPool;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-        this.emailSender = emailSender;
-    }
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JavaMailSender emailSender;
+    private final JedisPool jedisPool;
 
     public void addNewUser(User user){
         UUID code = UUID.randomUUID();

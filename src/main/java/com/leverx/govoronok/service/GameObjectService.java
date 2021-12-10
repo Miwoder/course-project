@@ -1,10 +1,8 @@
 package com.leverx.govoronok.service;
 
-import com.leverx.govoronok.model.Comment;
 import com.leverx.govoronok.model.GameObject;
 import com.leverx.govoronok.repository.GameObjectRepository;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,12 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class GameObjectService {
-    private GameObjectRepository gameObjectRepository;
-
-    public GameObjectService(GameObjectRepository gameObjectRepository){
-        this.gameObjectRepository = gameObjectRepository;
-    }
+    private final GameObjectRepository gameObjectRepository;
 
     public List<GameObject> getGameObjectsForUserById(Long id){
         return gameObjectRepository.getGameObjectsByAuthor_Id(id);

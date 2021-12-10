@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Edit comment</title>
@@ -8,9 +8,11 @@
 
 <form th:method="PUT" th:action="@{/users/{id}/comments/{commentId}(id=${comment.getTrader().getId()} , commentId=${comment.getId()})}" th:object="${comment}">
     <label for="message">Message: </label>
+    <div style="color: red" th:if="${#fields.hasErrors('message')}" th:errors="*{message}">Mwssage incorrect</div>
     <input type="text" th:field="*{message}" id="message"/>
     <br/>
     <label for="rating">Rating: </label>
+    <div style="color: red" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}">Rating incorrect</div>
     <input type="text" th:field="*{rating}" id="rating"/>
     <br/>
     <input type="submit" value="Update comment"/>
