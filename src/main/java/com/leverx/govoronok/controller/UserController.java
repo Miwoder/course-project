@@ -36,6 +36,12 @@ public class UserController {
 
     @PostMapping("/signup")
     public String addNewUser(@Valid @ModelAttribute("user") User user, Errors errors, BindingResult bindingResult) {
+        if (userService.findByUsername(user.getEmail()) != null) {
+            errors.rejectValue("email", "email.notUnique", "Email must be unique.");
+        }
+        if (user.getEmail()  == null || user.getEmail().length() == 0) {
+            bindingResult.rejectValue("email", "email.missing", "Must enter email");
+        }
         if(errors.hasErrors() || bindingResult.hasErrors()){
             return "redirect:/signup";
         }
@@ -73,6 +79,9 @@ public class UserController {
     @PostMapping("/authentication/reset")
     public String setNewPassword(@Valid @ModelAttribute("code") UUID code, @Valid String password,
                                  @Valid String passwordConfirm, Errors errors) {
+        if (!password.equals(passwordConfirm)) {
+            errors.rejectValue("confirmPassword", "confirmPassword.dontMatch", "Passwords dont match.");
+        }
         if(errors.hasErrors()){
             return "redirect:/signin";
         }
