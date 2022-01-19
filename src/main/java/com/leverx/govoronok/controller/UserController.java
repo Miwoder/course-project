@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @PostMapping("/authentication/forgot_password")
-    public String resetPassword(Model model, @Valid @ModelAttribute("username") String username, Errors errors, BindingResult bindingResult) {
+    public String resetPassword(@Valid @ModelAttribute("username") String username, Errors errors, BindingResult bindingResult) {
         if(errors.hasErrors() || bindingResult.hasErrors()){
             return "redirect:/signin";
         }
@@ -77,7 +77,7 @@ public class UserController {
     }
 
     @PostMapping("/authentication/reset")
-    public String setNewPassword(@Valid @ModelAttribute("code") UUID code, @Valid String password,
+    public String setNewPassword(@ModelAttribute("code") UUID code, @Valid String password,
                                  @Valid String passwordConfirm, Errors errors) {
         if (!password.equals(passwordConfirm)) {
             errors.rejectValue("confirmPassword", "confirmPassword.dontMatch", "Passwords dont match.");
@@ -110,13 +110,14 @@ public class UserController {
     }
 
     @PostMapping("/traders")
-    public String addNewTraderByUser(Model model, @Valid @ModelAttribute("newUser") User newUser, Errors errors) {
+    public String addNewTraderByUser(@Valid @ModelAttribute("newUser") User newUser, Errors errors) {
         if(errors.hasErrors()){
             return "redirect:/traders";
         }
         newUser.setRole(Role.TRADER);
         newUser.setEmail("adminmail@mail.com");
         newUser.setPassword("jayehfub");
+        newUser.setApproved(Boolean.TRUE);
         userService.addNewUser(newUser);
         return "redirect:/traders";
     }
